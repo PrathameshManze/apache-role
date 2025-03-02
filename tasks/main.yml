@@ -1,0 +1,23 @@
+---
+# tasks file for apache-role
+  - name: install apache httpd server with latest version
+    ansible.builtin.apt:
+      name: apache2
+      state: latest
+
+  - name: Server Intalled successfully
+    ansible.builtin.shell: |
+      echo "Server Intalled successfully"
+      date  
+    register: command_output
+
+  - name: Display command output
+    ansible.builtin.debug:
+      msg: "{{ command_output.stdout_lines }}"
+      
+  - name: copy the local index.html file to server
+    ansible.builtin.copy:
+      src: index.html
+      dest: /var/www/html
+      mode: '0777'
+    notify: Restart Apache
